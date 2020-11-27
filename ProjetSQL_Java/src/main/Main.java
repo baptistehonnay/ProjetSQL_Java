@@ -15,7 +15,7 @@ public class Main {
 		}
 		
 		//connect to database
-		String url="jdbc:postgresql://localhost:5432/projet";
+		String url="jdbc:postgresql://localhost:5432/dbprojet";
 		Connection conn=null;
 		try {
 			conn=DriverManager.getConnection(url,"userProjetSQL", "azerty");

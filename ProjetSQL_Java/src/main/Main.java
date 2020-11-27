@@ -1,6 +1,8 @@
 package main;
 import java.sql.*;
 
+import config.Context;
+
 
 public class Main {
 
@@ -14,11 +16,14 @@ public class Main {
 			System.exit(1);
 		}
 		
+		Context.load("config.properties");
 		//connect to database
-		String url="jdbc:postgresql://localhost:5432/dbprojet";
+		String url = Context.getProperty("dbUrl");
+		String username = Context.getProperty("username");
+		String userpwd = Context.getProperty("userpwd");
 		Connection conn=null;
 		try {
-			conn=DriverManager.getConnection(url,"userProjetSQL", "azerty");
+			conn=DriverManager.getConnection(url, username, userpwd);
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);

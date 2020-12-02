@@ -28,10 +28,10 @@ public class ApplicationUtilisateur {
 					displayExams();
 					break;
 				case 2:
-					subscribeExam();
+					signUpExam();
 					break;
 				case 3:
-					subscribeAll();
+					signUpAll();
 					break;
 				case 4:
 					displaySchedule();
@@ -51,12 +51,12 @@ public class ApplicationUtilisateur {
 		
 	}
 
-	private static void subscribeExam() {
+	private static void signUpExam() {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	private static void subscribeAll() {
+	private static void signUpAll() {
 		// TODO Auto-generated method stub
 		
 	}

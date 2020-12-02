@@ -30,25 +30,25 @@ public class ApplicationCentrale {
 				addLocal();
 				break;
 			case 2: 
-				// TODO addExam();
+				addExam();
 				break;
 			case 3: 
-				// TODO encodeStartHour();
+				encodeStartHour();
 				break;
 			case 4: 
-				// TODO bookLocal();
+				bookLocal();
 				break;
 			case 5: 
-				// TODO displayBlocSchedule();
+				displayBlocSchedule();
 				break;
 			case 6: 
-				// TODO displayLocalBookings();
+				displayLocalBookings();
 				break;
 			case 7: 
-				// TODO displayNCRExams();
+				displayNCRExams();
 				break;
 			case 8: 
-				// TODO displayNCRExamNumberByBloc();
+				displayNCRExamNumberByBloc();
 				break;
 			default:
 				quit = true;
@@ -76,6 +76,35 @@ public class ApplicationCentrale {
 		}
 	}
 
+	private static void addExam() {
+		//TODO
+	}
+	
+	private static void encodeStartHour() {
+		//TODO
+	}
+
+	private static void bookLocal() {
+		//TODO
+	}
+	
+	private static void displayBlocSchedule() {
+		//TODO
+	}
+	
+	private static void displayLocalBookings() {
+		//TODO
+	}
+	
+	private static void displayNCRExams() {
+		//TODO
+	}
+	
+	private static void displayNCRExamNumberByBloc() {
+		//TODO
+	}
+	
+	
 	//business methods
 	
 	private static void clear() {

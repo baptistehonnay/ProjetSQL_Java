@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import utils.Db;
+import db.Db;
 
 public class ApplicationCentrale {
 	private static Scanner scanner = new Scanner(System.in);

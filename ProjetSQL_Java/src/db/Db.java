@@ -149,7 +149,7 @@ public class Db {
 				String codeExam = res.getString(2);
 				String examName = res.getString(3);
 				
-				System.out.format("%s (%s) : %tB", examName, codeExam, dateTime);
+				System.out.format("-------------------------%nnom: %s%ncode: %s%ndate de debut: %tB%n", examName, codeExam, dateTime);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -36,7 +36,7 @@ public class Db {
 		}
 	}
 	
-	public boolean updateDateHeureDebut(String codeExam, LocalDateTime dateHeureDebut) {
+	public boolean updateStartDateTime(String codeExam, LocalDateTime dateHeureDebut) {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT(projet.update_date_heure_debut(?, ?));");
 			ps.setString(1, codeExam);

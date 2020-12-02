@@ -65,4 +65,46 @@ public class Db {
 		}
 		return true;
 	}
+
+	public boolean insertExamen(String examCode, String examName, String codeBloc, int timeInMinutes,
+			boolean computer) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT( projet.insert_examen(?, ?, ?, ?::interval, ?) );");
+			ps.setString(1, examCode);
+			ps.setString(2, examName);
+			ps.setString(3, codeBloc);
+			ps.setString(4, timeInMinutes + " minutes");
+			ps.setBoolean(5, computer);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public boolean bookLocal(String examCode, String nomLocal) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT( projet.insert_reservation_local(?, ?) );");
+			ps.setString(1, examCode);
+			ps.setString(2, nomLocal);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public boolean displayBlocSchedule(String blocCode) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_horaire_examen(?) t(date_heure_debut TIMESTAMP, code_examen CHAR(6), nom_examen VARCHAR(100), nombrelocaux_reservés bigint);");
+			ps.setString(1, blocCode);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }

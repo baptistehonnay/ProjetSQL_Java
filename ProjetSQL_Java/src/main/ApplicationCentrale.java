@@ -17,9 +17,9 @@ public class ApplicationCentrale {
 			"Encode l'heure de debut d'un examen",
 			"Reserver un local pour un examen",
 			"Afficher l'horaire d'examen d'un bloc",
-			"Afficher les réservations d'un local",
+			"Afficher les reservations d'un local",
 			"Afficher les examens qui ne sont pas completement reserves",
-			"Afficher le nombre d'examens pas complétement reserves par bloc",
+			"Afficher le nombre d'examens pas completement reserves par bloc",
 			"Quitter"};
 	
 	public static void main(String[] args) {
@@ -80,7 +80,27 @@ public class ApplicationCentrale {
 	}
 
 	private static void addExam() {
-		//TODO
+		clear();
+		System.out.println("Ajouter un examen:");
+		
+		System.out.print("Entrez le code:\n> ");
+		String examCode = scanner.nextLine();
+		
+		System.out.print("Entrez le nom:\n> ");
+		String examName = scanner.nextLine();
+		
+		System.out.print("Entrez le code bloc:\n> ");
+		String codeBloc = scanner.nextLine();
+		
+		System.out.print("Entrez le temps (en minutes):\n> ");
+		int timeInMinutes = inputStrictlyPositiveInteger();
+		
+		System.out.print("L examen est-il sur machine ? (V/F)\n> ");
+		boolean computer = inputBoolean();
+		
+		if(!db.insertExamen(examCode, examName, codeBloc, timeInMinutes, computer)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	private static void encodeStartHour() {
@@ -99,11 +119,30 @@ public class ApplicationCentrale {
 	}
 
 	private static void bookLocal() {
-		//TODO
+		clear();
+		System.out.println("Reserver un local:");
+		
+		System.out.print("Entrez le code de l'examen:\n> ");
+		String examCode = scanner.nextLine();
+		
+		System.out.print("Entrez le nom du local:\n> ");
+		String nomLocal = scanner.nextLine();
+		
+		if(!db.bookLocal(examCode, nomLocal)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	private static void displayBlocSchedule() {
-		//TODO
+		clear();
+		System.out.println("Affichage de l'horaire d'un bloc:");
+		
+		System.out.print("Entrez le code du bloc:\n> ");
+		String blocCode = scanner.nextLine();
+		
+		if(!db.displayBlocSchedule(blocCode)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	private static void displayLocalBookings() {

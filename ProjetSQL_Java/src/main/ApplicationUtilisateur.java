@@ -1,6 +1,7 @@
 package main;
 
 import db.Db;
+import utils.BCrypt;
 import utils.Utils;
 
 public class ApplicationUtilisateur {
@@ -21,7 +22,8 @@ public class ApplicationUtilisateur {
 	
 	public static void main(String[] args) {
 		boolean quit = false;
-		while(!quit) { 
+		while(!quit) {
+			System.out.println("--Application Utilisateur--");
 			String username = unknownUserMenu();
 			if(username == null) 
 				quit = true;
@@ -32,23 +34,23 @@ public class ApplicationUtilisateur {
 					int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 					
 					switch(choice) {
-					case 1:
-						displayExams();
-						break;
-					case 2:
-						signUpExam(username);
-						break;
-					case 3:
-						signUpAll(username);
-						break;
-					case 4:
-						displaySchedule(username);
-						break;
-					case 5:
-						connected = false;
-						break;
-					default:
-						quit = true;
+						case 1:
+							displayExams();
+							break;
+						case 2:
+							signUpExam(username);
+							break;
+						case 3:
+							signUpAll(username);
+							break;
+						case 4:
+							displaySchedule(username);
+							break;
+						case 5:
+							connected = false;
+							break;
+						default:
+							quit = true;
 					}
 				}
 			}
@@ -84,27 +86,76 @@ public class ApplicationUtilisateur {
 	}
 
 	/**
-	 * 
 	 * @return username or null to quit the app
 	 */
 	private static String unknownUserMenu() {
-		Utils.displayMenu(UNKNOWN_USER_OPTIONS);
-		int choice = Utils.inputStrictlyPositiveIntegerLE(UNKNOWN_USER_OPTIONS.length);
-		switch(choice) {
-		case 1:
-			return connect();
-		case 2:
-			return register();
-		default:
+		String res;
+		do {
+			Utils.displayMenu(UNKNOWN_USER_OPTIONS);
+			int choice = Utils.inputStrictlyPositiveIntegerLE(UNKNOWN_USER_OPTIONS.length);
+			switch(choice) {
+				case 1:
+					res =  connect();
+					if(res == null) {
+						System.out.println("Nom d'utilisateur ou mot de passe invalide");
+					}
+					break;
+					
+				case 2:
+					res = register();
+					if(res == null) {
+						System.out.println("Une erreur est survenue lors de la tentative d'enregistrement du compte, verifiez les donnees que vous avez entre");
+					}
+					break;
+					
+				default:
+					return null; // quit
+			}
+		}while(res == null); // while error 
+		return res;
+		
+	}
+
+	/**
+	 * @return username or null in case of unexpected error (db)
+	 */
+	private static String register() {
+		String email, username, pwd, salt, pwdHash, bloc;
+		System.out.print("Enterz votre adresse e-mail:\n> ");
+		email = Utils.nextLine();
+		
+		System.out.print("Enterz votre nom d'utilisateur:\n> ");
+		username = Utils.nextLine();
+		
+		System.out.print("Enterz votre mot de passe:\n> ");
+		pwd = Utils.nextLine();
+		
+		System.out.print("Enterz votre nom de bloc:\n> ");
+		bloc = Utils.nextLine();
+		
+		salt = BCrypt.gensalt();
+		pwdHash = BCrypt.hashpw(pwd, salt);
+		
+		if(!db.insertUser(email, username, pwdHash, bloc)) 
+			return null;
+		return username;
+	}
+
+	/**
+	 * @return username or null in case of unexpected error (db)
+	 */
+	private static String connect() {
+		String username, pwd, pwdHashDB;
+		System.out.print("Enterz votre nom d'utilisateur:\n> ");
+		username = Utils.nextLine();
+		
+		System.out.print("Enterz votre mot de passe:\n> ");
+		pwd = Utils.nextLine();
+		
+		pwdHashDB = db.getUserHash(username);
+		if(pwdHashDB == null || !BCrypt.checkpw(pwd, pwdHashDB)){
 			return null;
 		}
-	}
-
-	private static String register() {
-		return null;
-	}
-
-	private static String connect() {
-		return null;
+		return username;
 	}
 }

@@ -197,7 +197,8 @@ public class Db {
 
 	public boolean displaySchedule(String username) {
 		try {
-			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_horaire_examens('moi') t(code_examen CHARACTER(6), nom_examen VARCHAR(100), id_bloc INTEGER, date_heure_debut TIMESTAMP, heure_fin TIMESTAMP, locaux VARCHAR(100));");
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_horaire_examens(?) t(code_examen CHARACTER(6), nom_examen VARCHAR(100), id_bloc INTEGER, date_heure_debut TIMESTAMP, heure_fin TIMESTAMP, locaux VARCHAR(100));");
+			ps.setString(1, username);
 			ResultSet res = ps.executeQuery();
 			while(res.next()) {
 				System.out.format("-------------------------%ncode d'examen : %s%nnom d'examen : %s%nid du bloc : %d%ndate heure debut : %tB%nheure de fin %tB%nlocaux : %s%n", res.getString(1), res.getString(2), res.getInt(3), res.getTimestamp(4), res.getTimestamp(5), res.getString(6));
@@ -207,5 +208,38 @@ public class Db {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean insertUser(String email, String username, String pwdHash, String bloc) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("projet.insert_utilisateur(?, ?, ?, ?));");
+			ps.setString(1, email);
+			ps.setString(2, username);
+			ps.setString(3, pwdHash);
+			ps.setString(4, bloc);
+			ps.execute();
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * returns the userhash or null if exception / unexpected result
+	 */
+	public String getUserHash(String username) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_mdp_crypte(?) t(hash VARCHAR(100));");
+			ps.setString(1, username);
+			ResultSet res = ps.executeQuery();
+			if(res.next()) {
+				String pwdHash = res.getString("hash");
+				return pwdHash;
+			}
+		}catch (SQLException e) {
+			//e.printStackTrace();
+		}
+		return null; // unexpected result (exception / empty result)
 	}
 }

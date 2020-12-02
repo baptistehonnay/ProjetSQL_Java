@@ -21,6 +21,7 @@ public class ApplicationCentrale {
 	public static void main(String[] args) {
 		boolean quit = false;
 		while(!quit) {
+			System.out.println("--Application Centrale--");
 			Utils.displayMenu(MENU_OPTIONS);
 			int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 			

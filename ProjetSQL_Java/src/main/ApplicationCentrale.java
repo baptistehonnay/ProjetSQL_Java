@@ -157,11 +157,15 @@ public class ApplicationCentrale {
 	}
 	
 	private static void displayNCRExams() {
-		//TODO
+		if(!db.displayNCRExams()) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	private static void displayNCRExamNumberByBloc() {
-		//TODO
+		if(!db.displayNCRExamNumberByBloc()) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	

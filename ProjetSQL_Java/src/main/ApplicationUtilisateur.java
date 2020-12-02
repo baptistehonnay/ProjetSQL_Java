@@ -5,6 +5,11 @@ import utils.Utils;
 
 public class ApplicationUtilisateur {
 	private static Db db = new Db();
+	private static final String[] UNKNOWN_USER_OPTIONS = {
+			"Se connecter",
+			"Creer un un compte",
+			"Quitter"
+	};
 	private static final String[] MENU_OPTIONS = {
 			"Afficher les examens",
 			"S'inscrire à un examen",
@@ -17,30 +22,34 @@ public class ApplicationUtilisateur {
 	public static void main(String[] args) {
 		boolean quit = false;
 		while(!quit) { 
-			String username = connect();
-			boolean connected = true;
-			while(connected && !quit) {
-				Utils.displayMainMenu(MENU_OPTIONS);
-				int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
-				
-				switch(choice) {
-				case 1:
-					displayExams();
-					break;
-				case 2:
-					signUpExam();
-					break;
-				case 3:
-					signUpAll();
-					break;
-				case 4:
-					displaySchedule();
-					break;
-				case 5:
-					connected = false;
-					break;
-				default:
-					quit = true;
+			String username = unknownUserMenu();
+			if(username == null) 
+				quit = true;
+			else {
+				boolean connected = true;
+				while(connected && !quit) {
+					Utils.displayMenu(MENU_OPTIONS);
+					int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
+					
+					switch(choice) {
+					case 1:
+						displayExams();
+						break;
+					case 2:
+						signUpExam();
+						break;
+					case 3:
+						signUpAll();
+						break;
+					case 4:
+						displaySchedule();
+						break;
+					case 5:
+						connected = false;
+						break;
+					default:
+						quit = true;
+					}
 				}
 			}
 		}
@@ -66,7 +75,28 @@ public class ApplicationUtilisateur {
 		
 	}
 
+	/**
+	 * 
+	 * @return username or null to quit the app
+	 */
+	private static String unknownUserMenu() {
+		Utils.displayMenu(UNKNOWN_USER_OPTIONS);
+		int choice = Utils.inputStrictlyPositiveIntegerLE(UNKNOWN_USER_OPTIONS.length);
+		switch(choice) {
+		case 1:
+			return connect();
+		case 2:
+			return register();
+		default:
+			return null;
+		}
+	}
+
+	private static String register() {
+		return null;
+	}
+
 	private static String connect() {
-		return "";
+		return null;
 	}
 }

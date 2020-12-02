@@ -79,7 +79,7 @@ public class Utils {
 	
 	// display
 	
-	public static void displayMainMenu(String[] menuOptions) {
+	public static void displayMenu(String[] menuOptions) {
 		System.out.println("--Application Centrale--");
 		for (int i = 0; i < menuOptions.length; i++) {
 			System.out.println((i+1) + ". " + menuOptions[i]);

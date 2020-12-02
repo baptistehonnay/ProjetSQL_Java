@@ -21,7 +21,7 @@ public class ApplicationCentrale {
 	public static void main(String[] args) {
 		boolean quit = false;
 		while(!quit) {
-			Utils.displayMainMenu(MENU_OPTIONS);
+			Utils.displayMenu(MENU_OPTIONS);
 			int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 			
 			switch(choice) {

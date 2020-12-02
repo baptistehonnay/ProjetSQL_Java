@@ -151,7 +151,7 @@ public class ApplicationCentrale {
 		System.out.print("Entrez le nom:\n> ");
 		String localName = scanner.nextLine();
 		
-		if(!db.selectReservationsLocal(localName)) {
+		if(!db.displayReservationsLocal(localName)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
 		}
 	}

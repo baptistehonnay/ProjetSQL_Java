@@ -128,7 +128,7 @@ public class Db {
 		return true;
 	}
 	
-	public boolean dislayReservationsLocal (String nomLocal) {
+	public boolean displayReservationsLocal (String nomLocal) {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_reservations_examens(?) t(date_heure_debut TIMESTAMP, code_examen CHAR(6), nom_examen VARCHAR(100));");
 			ps.setString(1, nomLocal);

@@ -3,6 +3,7 @@ package utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -48,9 +49,6 @@ public class Db {
 		return true;
 	}
 	
-	public boolean selectReservationsLocal (String nomLocal) {
-		return false;
-	}
 	
 	public boolean insertLocal(String localName, int seatNumber, boolean computer) {
 		try {
@@ -123,6 +121,25 @@ public class Db {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_nbr_exam_pas_completement_reserves_bloc() t(code_bloc VARCHAR(100), nbr_examen_pas_completement_reserve INTEGER);");
 			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean dislayReservationsLocal (String nomLocal) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_reservations_examens(?) t(date_heure_debut TIMESTAMP, code_examen CHAR(6), nom_examen VARCHAR(100));");
+			ps.setString(1, nomLocal);
+			ResultSet res = ps.executeQuery();
+			while(res.next()) {
+				Timestamp dateTime = res.getTimestamp(1);
+				String codeExam = res.getString(2);
+				String examName = res.getString(3);
+				
+				System.out.format("%s (%s) : %tB", examName, codeExam, dateTime);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

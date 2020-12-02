@@ -1,6 +1,12 @@
 package utils;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import config.Context;
 
 public class Db {
@@ -27,6 +33,19 @@ public class Db {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);
 		}
+	}
+	
+	public boolean updateDateHeureDebut(String codeExam, LocalDateTime dateHeureDebut) {
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT(projet.update_date_heure_debut(?, ?));");
+			ps.setString(1, codeExam);
+			ps.setTimestamp(2, Timestamp.valueOf(dateHeureDebut));
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean insertLocal(String localName, int seatNumber, boolean computer) {

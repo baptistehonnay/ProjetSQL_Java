@@ -1,5 +1,8 @@
 package main;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -81,7 +84,18 @@ public class ApplicationCentrale {
 	}
 	
 	private static void encodeStartHour() {
-		//TODO
+		clear();
+		System.out.println("Encoder une date & heure de debut d'examen:");
+		
+		System.out.print("Enterz le code de l'examen\n> ");
+		String codeExam = scanner.nextLine();
+		
+		System.out.print("Entrez une la date & heure de debut\n> ");
+		LocalDateTime dateTimeDebut = inputDateTime();
+		
+		if(!db.updateDateHeureDebut(codeExam, dateTimeDebut)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 
 	private static void bookLocal() {
@@ -135,7 +149,7 @@ public class ApplicationCentrale {
 			} catch (InputMismatchException e) {res = -1;}
 			
 			if(res <= 0 || res > max) {
-				System.out.print("Entrez un entier entre 1 et " + max + "\n> ");
+				System.out.print("Erreur: Entrez un entier entre 1 et " + max + "\n> ");
 			}
 		}while(res <= 0 || res > max);
 		scanner.nextLine();
@@ -150,7 +164,7 @@ public class ApplicationCentrale {
 			} catch (InputMismatchException e) {res = -1;}
 			
 			if(res <= 0) {
-				System.out.print("Entrez un entier strictement positif\n> ");
+				System.out.print("Erreur: Entrez un entier strictement positif\n> ");
 			}
 		}while(res <= 0);
 		scanner.nextLine();
@@ -162,9 +176,25 @@ public class ApplicationCentrale {
 		do {
 			input = scanner.nextLine();
 			if(!input.equals("V") && !input.equals("F")) {
-				System.out.print("Entrez V ou F\n> ");
+				System.out.print("Erreur: Entrez V ou F\n> ");
 			}
 		} while(!input.equals("V") && !input.equals("F"));
 		return input.equals("V");
+	}
+	
+	private static LocalDateTime inputDateTime() {
+		String input;
+		boolean parseIssue = true;
+		LocalDateTime res = null;
+		do {
+			input = scanner.nextLine();
+			try {
+				res = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+				parseIssue = false;
+			}catch(DateTimeParseException e) {
+				System.out.print("Erreur: Veuillez respecter le format (jj/mm/aaaa hh:mm)\n> ");
+			}
+		} while(parseIssue);
+		return res;
 	}
 }

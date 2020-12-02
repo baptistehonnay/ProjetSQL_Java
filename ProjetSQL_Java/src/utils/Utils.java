@@ -9,6 +9,8 @@ import java.util.Scanner;
 public class Utils {
 	private static Scanner scanner = new Scanner(System.in);
 	
+	//input
+	
 	/**
 	 * invites the user to type a number between 1 and max
 	 * @param max
@@ -74,4 +76,15 @@ public class Utils {
 	public static String nextLine() {
 		return scanner.nextLine();
 	}
+	
+	// display
+	
+	public static void displayMainMenu(String[] menuOptions) {
+		System.out.println("--Application Centrale--");
+		for (int i = 0; i < menuOptions.length; i++) {
+			System.out.println((i+1) + ". " + menuOptions[i]);
+		}
+		System.out.print("> ");
+	}
+	
 }

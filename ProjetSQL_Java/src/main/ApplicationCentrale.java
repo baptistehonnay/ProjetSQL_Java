@@ -21,7 +21,7 @@ public class ApplicationCentrale {
 	public static void main(String[] args) {
 		boolean quit = false;
 		while(!quit) {
-			displayMainMenu();
+			Utils.displayMainMenu(MENU_OPTIONS);
 			int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 			
 			switch(choice) {
@@ -58,7 +58,6 @@ public class ApplicationCentrale {
 	//menu option methods
 	
 	private static void addLocal() {
-		clear();
 		System.out.println("Ajouter un local:");
 		
 		System.out.print("Entrez le nom:\n> ");
@@ -76,7 +75,6 @@ public class ApplicationCentrale {
 	}
 
 	private static void addExam() {
-		clear();
 		System.out.println("Ajouter un examen:");
 		
 		System.out.print("Entrez le code:\n> ");
@@ -100,7 +98,6 @@ public class ApplicationCentrale {
 	}
 	
 	private static void encodeStartHour() {
-		clear();
 		System.out.println("Encoder une date & heure de debut d'examen:");
 		
 		System.out.print("Enterz le code de l'examen\n> ");
@@ -115,7 +112,6 @@ public class ApplicationCentrale {
 	}
 
 	private static void bookLocal() {
-		clear();
 		System.out.println("Reserver un local:");
 		
 		System.out.print("Entrez le code de l'examen:\n> ");
@@ -130,7 +126,6 @@ public class ApplicationCentrale {
 	}
 	
 	private static void displayBlocSchedule() {
-		clear();
 		System.out.println("Affichage de l'horaire d'un bloc:");
 		
 		System.out.print("Entrez le code du bloc:\n> ");
@@ -162,24 +157,6 @@ public class ApplicationCentrale {
 		if(!db.displayNCRExamNumberByBloc()) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
 		}
-	}
-	
-	
-	// --- business methods ---
-	
-	private static void clear() {
-		for (int i = 0; i < 20; i++) {
-			System.out.println();
-		}
-	}
-	
-	private static void displayMainMenu() {
-		clear();
-		System.out.println("--Application Centrale--");
-		for (int i = 0; i < MENU_OPTIONS.length; i++) {
-			System.out.println((i+1) + ". " + MENU_OPTIONS[i]);
-		}
-		System.out.print("> ");
 	}
 	
 	

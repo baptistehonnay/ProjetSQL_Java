@@ -1,9 +1,13 @@
 package main;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import utils.Db;
 
 public class ApplicationCentrale {
 	private static Scanner scanner = new Scanner(System.in);
+	private static Db db = new Db();
 	private static final String[] MENU_OPTIONS = {
 			"Ajouter un local",
 			"Ajouter un examen",
@@ -23,7 +27,7 @@ public class ApplicationCentrale {
 			
 			switch(choice) {
 			case 1: 
-				// TODO addLocal();
+				addLocal();
 				break;
 			case 2: 
 				// TODO addExam();
@@ -52,6 +56,28 @@ public class ApplicationCentrale {
 		}
 	}
 	
+	//menu option methods
+	
+	private static void addLocal() {
+		clear();
+		System.out.println("Ajouter un local:");
+		
+		System.out.print("Entrez le nom:\n> ");
+		String localName = scanner.nextLine();
+		
+		System.out.print("Entrez le nombre de places:\n> ");
+		int seatNumber = inputStrictlyPositiveInteger();
+		
+		System.out.print("Le local est-il un local machine ? (V/F)\n> ");
+		boolean computer = inputBoolean();
+		
+		if(!db.insertLocal(localName, seatNumber, computer)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
+	}
+
+	//business methods
+	
 	private static void clear() {
 		for (int i = 0; i < 20; i++) {
 			System.out.println();
@@ -64,6 +90,7 @@ public class ApplicationCentrale {
 		for (int i = 0; i < MENU_OPTIONS.length; i++) {
 			System.out.println((i+1) + ". " + MENU_OPTIONS[i]);
 		}
+		System.out.print("> ");
 	}
 	
 	/**
@@ -74,11 +101,41 @@ public class ApplicationCentrale {
 	private static int inputStrictlyPositiveIntegerLE(int max) {
 		int res;
 		do {
-			res = scanner.nextInt();
+			try {
+				res = scanner.nextInt();
+			} catch (InputMismatchException e) {res = -1;}
+			
 			if(res <= 0 || res > max) {
-				System.out.print("Entrez un nombre entre 1 et " + max + "\n> ");
+				System.out.print("Entrez un entier entre 1 et " + max + "\n> ");
 			}
 		}while(res <= 0 || res > max);
+		scanner.nextLine();
 		return res;
+	}
+	
+	private static int inputStrictlyPositiveInteger() {
+		int res;
+		do {
+			try {
+				res = scanner.nextInt();
+			} catch (InputMismatchException e) {res = -1;}
+			
+			if(res <= 0) {
+				System.out.print("Entrez un entier strictement positif\n> ");
+			}
+		}while(res <= 0);
+		scanner.nextLine();
+		return res;
+	}
+	
+	private static boolean inputBoolean() {
+		String input;
+		do {
+			input = scanner.nextLine();
+			if(!input.equals("V") && !input.equals("F")) {
+				System.out.print("Entrez V ou F\n> ");
+			}
+		} while(!input.equals("V") && !input.equals("F"));
+		return input.equals("V");
 	}
 }

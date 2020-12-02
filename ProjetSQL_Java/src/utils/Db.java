@@ -29,17 +29,17 @@ public class Db {
 		}
 	}
 	
-	public void test() {
+	public boolean insertLocal(String localName, int seatNumber, boolean computer) {
 		try {
-			Statement s = conn.createStatement();
-			try(ResultSet rs= s.executeQuery("SELECT ut.mail FROM projet.utilisateurs ut;")){
-				while(rs.next()) {
-					System.out.println(rs.getString(1));
-				}
-			}
-		} catch (SQLException se) { 
-			se.printStackTrace(); 
-			System.exit(1); 
+			PreparedStatement ps = this.conn.prepareStatement("SELECT( projet.insert_local(?, ?, ?) );");
+			ps.setString(1, localName);
+			ps.setInt(2, seatNumber);
+			ps.setBoolean(3, computer);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 }

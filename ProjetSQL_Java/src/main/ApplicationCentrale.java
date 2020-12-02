@@ -90,7 +90,7 @@ public class ApplicationCentrale {
 		System.out.print("Enterz le code de l'examen\n> ");
 		String codeExam = scanner.nextLine();
 		
-		System.out.print("Entrez une la date & heure de debut\n> ");
+		System.out.print("Entrez la date & heure de debut\n> ");
 		LocalDateTime dateTimeDebut = inputDateTime();
 		
 		if(!db.updateDateHeureDebut(codeExam, dateTimeDebut)) {
@@ -107,7 +107,14 @@ public class ApplicationCentrale {
 	}
 	
 	private static void displayLocalBookings() {
-		//TODO
+		System.out.println("Afficher les réservations sur un local:");
+		
+		System.out.print("Entrez le nom:\n> ");
+		String localName = scanner.nextLine();
+		
+		if(!db.selectReservationsLocal(localName)) {
+			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
+		}
 	}
 	
 	private static void displayNCRExams() {

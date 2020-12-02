@@ -48,6 +48,10 @@ public class Db {
 		return true;
 	}
 	
+	public boolean selectReservationsLocal (String nomLocal) {
+		return false;
+	}
+	
 	public boolean insertLocal(String localName, int seatNumber, boolean computer) {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT( projet.insert_local(?, ?, ?) );");

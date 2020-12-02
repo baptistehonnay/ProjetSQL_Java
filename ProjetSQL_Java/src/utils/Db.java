@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.sun.net.httpserver.Authenticator.Result;
+
 import config.Context;
 
 public class Db {
@@ -98,7 +100,10 @@ public class Db {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_horaire_examen(?) t(date_heure_debut TIMESTAMP, code_examen CHAR(6), nom_examen VARCHAR(100), nombrelocaux_reservés bigint);");
 			ps.setString(1, blocCode);
-			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while(res.next()) {
+				System.out.format("-------------------------%ndate heure debut : %tB%ncode examen : %s%nnom examen : %s%nnombre locaux reservé(s) : %d%n", res.getTimestamp(1), res.getString(2), res.getString(3), res.getInt(4));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -109,7 +114,10 @@ public class Db {
 	public boolean displayNCRExams() {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_examens_non_completement_reserve() t(code_examen CHAR(6), nom_examen VARCHAR(100), id_bloc INTEGER, duree INTERVAL, est_sur_machines BOOLEAN, date_heure_debut TIMESTAMP, nombre_inscriptions INTEGER);");
-			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while(res.next()) {
+				System.out.format("-------------------------%ncode examen : %s%nnom examen : %s%nid bloc : %d%nduree : %tB%nest sur machine : %b%ndate heure debut %tB%nnombre inscrits : %d%n", res.getString(1), res.getString(2), res.getInt(3), res.getTimestamp(4), res.getBoolean(5), res.getTimestamp(6), res.getInt(7));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -120,7 +128,10 @@ public class Db {
 	public boolean displayNCRExamNumberByBloc() {
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM projet.select_nbr_exam_pas_completement_reserves_bloc() t(code_bloc VARCHAR(100), nbr_examen_pas_completement_reserve INTEGER);");
-			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while(res.next()) {
+				System.out.format("-------------------------%ncode bloc : %s%nnombre examen pas completement reserve: %d%n", res.getString(1), res.getInt(2));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

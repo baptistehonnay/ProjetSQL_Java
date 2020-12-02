@@ -1,15 +1,11 @@
 package main;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import db.Db;
+import utils.Utils;
 
 public class ApplicationCentrale {
-	private static Scanner scanner = new Scanner(System.in);
 	private static Db db = new Db();
 	private static final String[] MENU_OPTIONS = {
 			"Ajouter un local",
@@ -26,7 +22,7 @@ public class ApplicationCentrale {
 		boolean quit = false;
 		while(!quit) {
 			displayMainMenu();
-			int choice = inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
+			int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 			
 			switch(choice) {
 			case 1: 
@@ -66,13 +62,13 @@ public class ApplicationCentrale {
 		System.out.println("Ajouter un local:");
 		
 		System.out.print("Entrez le nom:\n> ");
-		String localName = scanner.nextLine();
+		String localName = Utils.nextLine();
 		
 		System.out.print("Entrez le nombre de places:\n> ");
-		int seatNumber = inputStrictlyPositiveInteger();
+		int seatNumber = Utils.inputStrictlyPositiveInteger();
 		
 		System.out.print("Le local est-il un local machine ? (V/F)\n> ");
-		boolean computer = inputBoolean();
+		boolean computer = Utils.inputBoolean();
 		
 		if(!db.insertLocal(localName, seatNumber, computer)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -84,19 +80,19 @@ public class ApplicationCentrale {
 		System.out.println("Ajouter un examen:");
 		
 		System.out.print("Entrez le code:\n> ");
-		String examCode = scanner.nextLine();
+		String examCode = Utils.nextLine();
 		
 		System.out.print("Entrez le nom:\n> ");
-		String examName = scanner.nextLine();
+		String examName = Utils.nextLine();
 		
 		System.out.print("Entrez le code bloc:\n> ");
-		String codeBloc = scanner.nextLine();
+		String codeBloc = Utils.nextLine();
 		
 		System.out.print("Entrez le temps (en minutes):\n> ");
-		int timeInMinutes = inputStrictlyPositiveInteger();
+		int timeInMinutes = Utils.inputStrictlyPositiveInteger();
 		
 		System.out.print("L examen est-il sur machine ? (V/F)\n> ");
-		boolean computer = inputBoolean();
+		boolean computer = Utils.inputBoolean();
 		
 		if(!db.insertExamen(examCode, examName, codeBloc, timeInMinutes, computer)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -108,10 +104,10 @@ public class ApplicationCentrale {
 		System.out.println("Encoder une date & heure de debut d'examen:");
 		
 		System.out.print("Enterz le code de l'examen\n> ");
-		String examCode = scanner.nextLine();
+		String examCode = Utils.nextLine();
 		
 		System.out.print("Entrez la date & heure de debut\n> ");
-		LocalDateTime startDateTime = inputDateTime();
+		LocalDateTime startDateTime = Utils.inputDateTime();
 		
 		if(!db.updateStartDateTime(examCode, startDateTime)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -123,10 +119,10 @@ public class ApplicationCentrale {
 		System.out.println("Reserver un local:");
 		
 		System.out.print("Entrez le code de l'examen:\n> ");
-		String examCode = scanner.nextLine();
+		String examCode = Utils.nextLine();
 		
 		System.out.print("Entrez le nom du local:\n> ");
-		String nomLocal = scanner.nextLine();
+		String nomLocal = Utils.nextLine();
 		
 		if(!db.bookLocal(examCode, nomLocal)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -138,7 +134,7 @@ public class ApplicationCentrale {
 		System.out.println("Affichage de l'horaire d'un bloc:");
 		
 		System.out.print("Entrez le code du bloc:\n> ");
-		String blocCode = scanner.nextLine();
+		String blocCode = Utils.nextLine();
 		
 		if(!db.displayBlocSchedule(blocCode)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -149,7 +145,7 @@ public class ApplicationCentrale {
 		System.out.println("Afficher les reservations sur un local:");
 		
 		System.out.print("Entrez le nom:\n> ");
-		String localName = scanner.nextLine();
+		String localName = Utils.nextLine();
 		
 		if(!db.displayReservationsLocal(localName)) {
 			System.out.println("Une erreur est survenue durant l'ajout dans la base de donnees");
@@ -186,65 +182,5 @@ public class ApplicationCentrale {
 		System.out.print("> ");
 	}
 	
-	/**
-	 * invites the user to type a number between 1 and max
-	 * @param max
-	 * @return the user's input
-	 */
-	private static int inputStrictlyPositiveIntegerLE(int max) {
-		int res;
-		do {
-			try {
-				res = scanner.nextInt();
-			} catch (InputMismatchException e) {res = -1;}
-			
-			if(res <= 0 || res > max) {
-				System.out.print("Erreur: Entrez un entier entre 1 et " + max + "\n> ");
-			}
-		}while(res <= 0 || res > max);
-		scanner.nextLine();
-		return res;
-	}
 	
-	private static int inputStrictlyPositiveInteger() {
-		int res;
-		do {
-			try {
-				res = scanner.nextInt();
-			} catch (InputMismatchException e) {res = -1;}
-			
-			if(res <= 0) {
-				System.out.print("Erreur: Entrez un entier strictement positif\n> ");
-			}
-		}while(res <= 0);
-		scanner.nextLine();
-		return res;
-	}
-	
-	private static boolean inputBoolean() {
-		String input;
-		do {
-			input = scanner.nextLine();
-			if(!input.equals("V") && !input.equals("F")) {
-				System.out.print("Erreur: Entrez V ou F\n> ");
-			}
-		} while(!input.equals("V") && !input.equals("F"));
-		return input.equals("V");
-	}
-	
-	private static LocalDateTime inputDateTime() {
-		String input;
-		boolean parseIssue = true;
-		LocalDateTime res = null;
-		do {
-			input = scanner.nextLine();
-			try {
-				res = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-				parseIssue = false;
-			}catch(DateTimeParseException e) {
-				System.out.print("Erreur: Veuillez respecter le format (jj/mm/aaaa hh:mm)\n> ");
-			}
-		} while(parseIssue);
-		return res;
-	}
 }

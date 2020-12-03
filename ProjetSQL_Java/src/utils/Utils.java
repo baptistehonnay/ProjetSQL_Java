@@ -21,7 +21,10 @@ public class Utils {
 		do {
 			try {
 				res = scanner.nextInt();
-			} catch (InputMismatchException e) {res = -1;}
+			} catch (InputMismatchException e) {
+				scanner.nextLine();
+				res = -1;
+			}
 			
 			if(res <= 0 || res > max) {
 				System.out.print("Erreur: Entrez un entier entre 1 et " + max + "\n> ");
@@ -36,7 +39,10 @@ public class Utils {
 		do {
 			try {
 				res = scanner.nextInt();
-			} catch (InputMismatchException e) {res = -1;}
+			} catch (InputMismatchException e) {
+				scanner.nextLine();
+				res = -1;
+			}
 			
 			if(res <= 0) {
 				System.out.print("Erreur: Entrez un entier strictement positif\n> ");

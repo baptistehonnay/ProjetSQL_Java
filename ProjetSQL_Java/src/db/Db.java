@@ -230,7 +230,7 @@ public class Db {
 	
 	public boolean insertUser(String email, String username, String pwdHash, String bloc) {
 		try {
-			PreparedStatement ps = this.conn.prepareStatement("projet.insert_utilisateur(?, ?, ?, ?));");
+			PreparedStatement ps = this.conn.prepareStatement("SELECT(projet.insert_utilisateur(?, ?, ?, ?));");
 			ps.setString(1, email);
 			ps.setString(2, username);
 			ps.setString(3, pwdHash);

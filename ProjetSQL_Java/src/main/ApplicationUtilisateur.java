@@ -93,6 +93,7 @@ public class ApplicationUtilisateur {
 		System.out.println();
 		String res;
 		do {
+			System.out.println();
 			System.out.println("--Application Utilisateur--");
 			Utils.displayMenu(UNKNOWN_USER_OPTIONS);
 			int choice = Utils.inputStrictlyPositiveIntegerLE(UNKNOWN_USER_OPTIONS.length);

@@ -23,13 +23,14 @@ public class ApplicationUtilisateur {
 	public static void main(String[] args) {
 		boolean quit = false;
 		while(!quit) {
-			System.out.println("--Application Utilisateur--");
 			String username = unknownUserMenu();
 			if(username == null) 
 				quit = true;
 			else {
 				boolean connected = true;
 				while(connected && !quit) {
+					System.out.println();
+					System.out.println("--Bienvenue " + username + "--");
 					Utils.displayMenu(MENU_OPTIONS);
 					int choice = Utils.inputStrictlyPositiveIntegerLE(MENU_OPTIONS.length);
 					
@@ -58,39 +59,41 @@ public class ApplicationUtilisateur {
 	}
 
 	private static void displayExams() {
-		if(!db.displayExams()) {
-			System.out.println("Une erreur est survenue lors la requete dans la base de donnees");
-		}
+		System.out.println();
+		db.displayExams();
 	}
 
 	private static void signUpExam(String username) {
+		System.out.println();
 		System.out.println("S'inscrire a un examen");
 		System.out.print("Entrez le code de l'examen:\n> ");
 		String examCode = Utils.nextLine();
 		
-		if(!db.signUpExams(examCode, username)) {
-			System.out.println("Une erreur est survenue lors la requete dans la base de donnees");
+		if(db.signUpExams(examCode, username)) {
+			System.out.println("Vous avez bien ete inscrit");
 		}
 	}
 	
 	private static void signUpAll(String username) {
-		if(!db.signUpAll(username)) {
-			System.out.println("Une erreur est survenue lors la requete dans la base de donnees");
+		System.out.println();
+		if(db.signUpAll(username)) {
+			System.out.println("Vous avez bien ete inscrit");
 		}
 	}
 	
 	private static void displaySchedule(String username) {
-		if(!db.displaySchedule(username)) {
-			System.out.println("Une erreur est survenue lors la requete dans la base de donnees");
-		}
+		System.out.println();
+		db.displaySchedule(username);
 	}
 
 	/**
 	 * @return username or null to quit the app
 	 */
 	private static String unknownUserMenu() {
+		System.out.println();
 		String res;
 		do {
+			System.out.println("--Application Utilisateur--");
 			Utils.displayMenu(UNKNOWN_USER_OPTIONS);
 			int choice = Utils.inputStrictlyPositiveIntegerLE(UNKNOWN_USER_OPTIONS.length);
 			switch(choice) {
@@ -120,17 +123,18 @@ public class ApplicationUtilisateur {
 	 * @return username or null in case of unexpected error (db)
 	 */
 	private static String register() {
+		System.out.println();
 		String email, username, pwd, salt, pwdHash, bloc;
-		System.out.print("Enterz votre adresse e-mail:\n> ");
+		System.out.print("Entrez votre adresse e-mail:\n> ");
 		email = Utils.nextLine();
 		
-		System.out.print("Enterz votre nom d'utilisateur:\n> ");
+		System.out.print("Entrez votre nom d'utilisateur:\n> ");
 		username = Utils.nextLine();
 		
-		System.out.print("Enterz votre mot de passe:\n> ");
+		System.out.print("Entrez votre mot de passe:\n> ");
 		pwd = Utils.nextLine();
 		
-		System.out.print("Enterz votre nom de bloc:\n> ");
+		System.out.print("Entrez le code de votre bloc:\n> ");
 		bloc = Utils.nextLine();
 		
 		salt = BCrypt.gensalt();
@@ -145,6 +149,7 @@ public class ApplicationUtilisateur {
 	 * @return username or null in case of unexpected error (db)
 	 */
 	private static String connect() {
+		System.out.println();
 		String username, pwd, pwdHashDB;
 		System.out.print("Enterz votre nom d'utilisateur:\n> ");
 		username = Utils.nextLine();

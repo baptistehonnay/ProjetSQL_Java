@@ -153,11 +153,10 @@ public class Db {
 			ps.setString(1, nomLocal);
 			ResultSet res = ps.executeQuery();
 			while(res.next()) {
-				Timestamp dateTime = res.getTimestamp(1);
+				String dateTime = getTimestampString(res.getTimestamp(1));
 				String codeExam = res.getString(2);
 				String examName = res.getString(3);
-				
-				System.out.format("-------------------------%nnom: %s%ncode: %s%ndate de debut: %tB%n", examName, codeExam, dateTime);
+				System.out.format("-------------------------%nnom: %s%ncode: %s%ndate de debut: %s%n", examName, codeExam, dateTime);
 			}
 		} catch (SQLException e) {
 			System.out.println(getCustomExceptionMsg(e.getMessage()));

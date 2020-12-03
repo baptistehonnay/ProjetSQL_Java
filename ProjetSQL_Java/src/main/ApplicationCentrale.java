@@ -111,7 +111,7 @@ public class ApplicationCentrale {
 		System.out.print("Entrez la date & heure de debut\n> ");
 		LocalDateTime startDateTime = Utils.inputDateTime();
 		
-		if(!db.updateStartDateTime(examCode, startDateTime)) {
+		if(db.updateStartDateTime(examCode, startDateTime)) {
 			System.out.println("L'heure a bien ete encodee");
 		}
 	}
@@ -126,7 +126,7 @@ public class ApplicationCentrale {
 		System.out.print("Entrez le nom du local:\n> ");
 		String nomLocal = Utils.nextLine();
 		
-		if(!db.bookLocal(examCode, nomLocal)) {
+		if(db.bookLocal(examCode, nomLocal)) {
 			System.out.println("Le local a bien ete reserve");
 		}
 	}
@@ -145,7 +145,7 @@ public class ApplicationCentrale {
 		System.out.println();
 		System.out.println("Afficher les reservations sur un local:");
 		
-		System.out.print("Entrez le nom:\n> ");
+		System.out.print("Entrez le nom du local:\n> ");
 		String localName = Utils.nextLine();
 		
 		db.displayReservationsLocal(localName);
